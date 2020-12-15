@@ -1,15 +1,15 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Startup Name Generator',
-      home: new RandomWords(),
-      theme: new ThemeData(
+      home: RandomWords(),
+      theme: ThemeData(
         primaryColor: Colors.white,
       ),
     );
@@ -18,23 +18,23 @@ class MyApp extends StatelessWidget {
 
 class RandomWords extends StatefulWidget {
   @override
-  createState() => new RandomWordsState();
+  createState() => _MyHomePageState();
 }
 
 class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
-  final _saved = new Set<WordPair>();
+  final _saved = Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   Widget build(BuildContext context) {
-    // final wordPair = new WordPair.random();
-    // return new Text(wordPair.asPascalCase);
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Startup Name Generator'),
+    // final wordPair =  WordPair.random();
+    // return  Text(wordPair.asPascalCase);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup Name Generator'),
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
+          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
         ],
       ),
       body: _buildSuggestions(),
@@ -42,7 +42,7 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildSuggestions() {
-    return new ListView.builder(
+    return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         // 对于每个建议的单词对都会调用一次itemBuilder，然后将单词对添加到ListTile行中
         // 在偶数行，该函数会为单词对添加一个ListTile row.
@@ -50,7 +50,7 @@ class RandomWordsState extends State<RandomWords> {
         // 注意，在小屏幕上，分割线看起来可能比较吃力。
         itemBuilder: (context, i) {
           // 在每一列之前，添加一个1像素高的分隔线widget
-          if (i.isOdd) return new Divider();
+          if (i.isOdd) return Divider();
 
           // 语法 "i ~/ 2" 表示i除以2，但返回值是整形（向下取整），比如i为：1, 2, 3, 4, 5
           // 时，结果为0, 1, 1, 2, 2， 这可以计算出ListView中减去分隔线后的实际单词对数量
@@ -66,12 +66,12 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget _buildRow(WordPair pair) {
     final alreadySaved = _saved.contains(pair);
-    return new ListTile(
-      title: new Text(
+    return ListTile(
+      title: Text(
         pair.asPascalCase,
         style: _biggerFont,
       ),
-      trailing: new Icon(
+      trailing: Icon(
         alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null,
       ),
@@ -89,12 +89,12 @@ class RandomWordsState extends State<RandomWords> {
 
   void _pushSaved() {
     Navigator.of(context).push(
-      new MaterialPageRoute(
+      MaterialPageRoute(
         builder: (context) {
           final tiles = _saved.map(
             (pair) {
-              return new ListTile(
-                title: new Text(
+              return ListTile(
+                title: Text(
                   pair.asPascalCase,
                   style: _biggerFont,
                 ),
@@ -106,14 +106,66 @@ class RandomWordsState extends State<RandomWords> {
             tiles: tiles,
           ).toList();
 
-          return new Scaffold(
-            appBar: new AppBar(
-              title: new Text('Saved Suggestions'),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Saved Suggestions'),
             ),
-            body: new ListView(children: divided),
+            body: ListView(children: divided),
           );
         },
       ),
+    );
+  }
+}
+
+class _MyHomePageState extends State<RandomWords> {
+  @override
+  Widget build(BuildContext context) {
+    var container = Container(
+      decoration: BoxDecoration(
+        color: Colors.black26,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 10.0, color: Colors.black38),
+                    borderRadius:
+                        const BorderRadius.all(const Radius.circular(8.0)),
+                  ),
+                  margin: const EdgeInsets.all(4.0),
+                  child: Image.asset('images/lake.jpg'),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 10.0, color: Colors.black38),
+                    borderRadius:
+                        const BorderRadius.all(const Radius.circular(8.0)),
+                  ),
+                  margin: const EdgeInsets.all(4.0),
+                  child: Image.asset('images/lake.jpg'),
+                ),
+              ),
+            ],
+          ),
+          // ...
+          // See the definition for the second row on GitHub:
+          // https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/container/main.dart
+        ],
+      ),
+    );
+    //...
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('常用布局widgets'),
+      ),
+      body: container,
     );
   }
 }
